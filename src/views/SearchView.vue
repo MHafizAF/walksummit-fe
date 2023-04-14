@@ -94,7 +94,7 @@ function clearSearch() {
 <template>
   <main id="main" tabindex="0">
     <h1>Grub Pendaki</h1>
-    <form action="">
+    <form @submit.prevent="search(searchID)">
       <label for="idsearch" tabindex="0" aria-label="Pencarian Grub"
         >Cari Id Grup:</label
       >
@@ -109,12 +109,7 @@ function clearSearch() {
       />
     </form>
     <div class="search-button-container">
-      <button
-        type="submit"
-        class="btn btn-white"
-        @click="search(searchID)"
-        aria-label="Mulai Mencari"
-      >
+      <button type="submit" class="btn btn-white" aria-label="Mulai Mencari">
         Search
       </button>
       <button
