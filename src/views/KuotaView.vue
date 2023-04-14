@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 function getAllKuota() {
   const showKuota = async () => {
     const { data } = await axios
-      .get(`http://walksummit-be.herokuapp.com/api/informasi-gunung`)
+      .get(`${import.meta.env.VITE_API}/api/informasi-gunung`)
       .then(function (response) {
         return response;
       })
@@ -15,7 +15,7 @@ function getAllKuota() {
     const responseJson = await showKuota();
     console.log(responseJson.data);
     const jalur = responseJson.data.kuota_tiap_jalur;
-    const jalurMap = jalur.map(jalur => {
+    const jalurMap = jalur.map((jalur) => {
       const content = document.querySelector(".content");
       content.innerHTML += `
       <div class="card-jalur">
@@ -59,8 +59,7 @@ onMounted(() => {
     <div class="header">
       <h1>Kuota Tiap Jalur</h1>
     </div>
-    <div class="content">
-    </div>
+    <div class="content"></div>
   </main>
 </template>
 

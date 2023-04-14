@@ -4,7 +4,7 @@ import { ref, onMounted } from "vue";
 function getAllKuota() {
   const showKuota = async () => {
     const { data } = await axios
-      .get(`http://walksummit-be.herokuapp.com/api/informasi-gunung`)
+      .get(`${import.meta.env.VITE_API}/api/informasi-gunung`)
       .then(function (response) {
         return response;
       })
@@ -18,9 +18,9 @@ function getAllKuota() {
     const jumlah_pendaki = responseJson.data.jumlah_pendaki;
     const kuota_maksimal = responseJson.data.kuota_maksimal;
     console.log(kuota_maksimal);
-    const jumlahPendakiContent = document.querySelector('.jumlah-pendaki');
-    const tersisaKuotaContent = document.querySelector('.tersisa-kuota');
-    const maksimalKuotaContent = document.querySelector('.maksimal-kuota');
+    const jumlahPendakiContent = document.querySelector(".jumlah-pendaki");
+    const tersisaKuotaContent = document.querySelector(".tersisa-kuota");
+    const maksimalKuotaContent = document.querySelector(".maksimal-kuota");
     jumlahPendakiContent.innerHTML = jumlah_pendaki;
     tersisaKuotaContent.innerHTML = sisa_kuota;
     maksimalKuotaContent.innerHTML = kuota_maksimal;
@@ -36,19 +36,35 @@ onMounted(() => {
   <main id="main" tabindex="0">
     <section id="hero">
       <div class="welcome">
-        <h1 tabindex="0">Selamat Datang Di Gunung Sindoro</h1>
+        <h1 tabindex="0">Pemesanan Tiket Pendakian Gunung</h1>
       </div>
     </section>
     <section id="informasi-gunung">
-      <h2 tabindex="0">Informasi Gunung Sindoro</h2>
+      <h2 tabindex="0">Informasi Gunung</h2>
       <div class="informasi-detail-gunung">
-        <p tabindex="0" aria-label="Ketinggian 3.153 mdpl"><i class="fa-solid fa-mountain"></i>3.153 mdpl</p>
-        <p tabindex="0" aria-label="Berstatus Semi Aktif"><i class="fa-solid fa-volcano"></i>Semi Aktif</p>
-        <p tabindex="0" aria-label="Harga Tiket Masuk 25 ribu"><i class="fa-solid fa-money-bill-wave"></i>Rp.25,000 (Tiap Jalur)</p>
-        <p tabindex="0" aria-label="Kledung Jalur favorit"><i class="fa-solid fa-road"></i>Kledung (via favorite)</p>
-        <p tabindex="0" ><i class="fa-solid fa-compass"></i>7.3010463°S 109.9968767°E</p>
-        <p tabindex="0" ><i class="fa-solid fa-location-dot"></i>Desa Katekan, Kecamatan Ngadirejo</p>
-        <p tabindex="0" ><i class="fa-solid fa-map"></i>Kabupaten Temanggung, dan Kabupaten Wonosobo.</p>
+        <p tabindex="0" aria-label="Ketinggian 3.153 mdpl">
+          <i class="fa-solid fa-mountain"></i>3.153 mdpl
+        </p>
+        <p tabindex="0" aria-label="Berstatus Semi Aktif">
+          <i class="fa-solid fa-volcano"></i>Semi Aktif
+        </p>
+        <p tabindex="0" aria-label="Harga Tiket Masuk 25 ribu">
+          <i class="fa-solid fa-money-bill-wave"></i>Rp.25,000 (Tiap Jalur)
+        </p>
+        <p tabindex="0" aria-label="Kledung Jalur favorit">
+          <i class="fa-solid fa-road"></i>Kledung (via favorite)
+        </p>
+        <p tabindex="0">
+          <i class="fa-solid fa-compass"></i>7.3010463°S 109.9968767°E
+        </p>
+        <p tabindex="0">
+          <i class="fa-solid fa-location-dot"></i>Desa Katekan, Kecamatan
+          Ngadirejo
+        </p>
+        <p tabindex="0">
+          <i class="fa-solid fa-map"></i>Kabupaten Temanggung, dan Kabupaten
+          Wonosobo.
+        </p>
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31659.65199144163!2d109.97832366852224!3d-7.302499512684031!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e70757555351a43%3A0x6e1fd0eaed14acb5!2sGn.%20Sindoro!5e0!3m2!1sid!2sid!4v1654936415761!5m2!1sid!2sid"
           allowfullscreen=""
@@ -58,7 +74,7 @@ onMounted(() => {
           tabindex="0"
         ></iframe>
       </div>
-      <h2 tabindex="0">Informasi Pendaki Gunung Sindoro</h2>
+      <h2 tabindex="0">Informasi Pendaki Gunung</h2>
       <div class="informasi-pendaki-gunung">
         <div class="jumlah card">
           <h1><i class="fa-solid fa-user-check"></i></h1>
@@ -85,7 +101,7 @@ onMounted(() => {
           <h1 tabindex="0" aria-label="pertama">1</h1>
           <picture>
             <source />
-            <img src="../../public/images/alur/alur-1.png" alt="Alur Pertama" />
+            <img src="../../public/images/alur/alur-1.jpg" alt="Alur Pertama" />
           </picture>
           <p tabindex="0">Pendaki harap membaca halaman home terlebih dahulu</p>
         </div>
@@ -96,7 +112,9 @@ onMounted(() => {
             <source />
             <img src="../../public/images/alur/alur-2.png" alt="Alur Kedua" />
           </picture>
-          <p tabindex="0">Cek Kuota Jalur yang tersedia sebelum mendaftar pendakian</p>
+          <p tabindex="0">
+            Cek Kuota Jalur yang tersedia sebelum mendaftar pendakian
+          </p>
         </div>
 
         <div class="alur-daftar-3">
@@ -123,7 +141,9 @@ onMounted(() => {
             <source />
             <img src="../../public/images/alur/alur-5.png" alt="Alur Kelima" />
           </picture>
-          <p tabindex="0">Setelah itu klik tombol tambah pendaki untuk mengisi biodata</p>
+          <p tabindex="0">
+            Setelah itu klik tombol tambah pendaki untuk mengisi biodata
+          </p>
         </div>
 
         <div class="alur-daftar-6">
@@ -141,16 +161,23 @@ onMounted(() => {
             <source />
             <img src="../../public/images/alur/alur-7.png" alt="Alur Ketujuh" />
           </picture>
-          <p tabindex="0">Setelah itu hubungi kontak yang tersedia untuk verifikasi</p>
+          <p tabindex="0">
+            Setelah itu hubungi kontak yang tersedia untuk verifikasi
+          </p>
         </div>
 
         <div class="alur-daftar-8">
           <h1 tabindex="0" aria-label="kedelapan">8</h1>
           <picture>
             <source />
-            <img src="../../public/images/alur/alur-8.png" alt="Alur Kedelapan" />
+            <img
+              src="../../public/images/alur/alur-8.png"
+              alt="Alur Kedelapan"
+            />
           </picture>
-          <p tabindex="0">Jika sudah status akan berubah "LUNAS" di halaman pencarian</p>
+          <p tabindex="0">
+            Jika sudah status akan berubah "LUNAS" di halaman pencarian
+          </p>
         </div>
       </div>
       <div class="container">
@@ -158,7 +185,7 @@ onMounted(() => {
       </div>
     </section>
     <section id="galeri-gunung">
-      <h2 tabindex="0">Galeri Gunung Sindoro</h2>
+      <h2 tabindex="0">Galeri Gunung</h2>
       <div class="list-galeri">
         <picture>
           <source />
@@ -179,7 +206,7 @@ onMounted(() => {
     </section>
     <section id="contact">
       <h2 tabindex="0" aria-label="Hubungi Kami">Contact Us</h2>
-      <hr>
+      <hr />
       <div class="list">
         <div class="box">
           <h1><i class="fa-solid fa-face-grin-wink"></i></h1>
@@ -211,7 +238,7 @@ main {
     position: absolute;
     top: -40px;
     left: 0;
-    background-color: #F8B400;
+    background-color: #f8b400;
     color: black;
     padding: 8px;
     z-index: 100;
@@ -331,7 +358,7 @@ main {
     align-items: center;
     padding: 10px 20px;
     margin: 0 auto 40px auto;
-    h2{
+    h2 {
       font-family: "Quicksand";
       font-weight: 800;
       font-size: 30px;
@@ -449,18 +476,18 @@ main {
     width: 80%;
     padding: 20px;
     margin: 0 auto 40px auto;
-    h2{
-      font-family: 'Quicksand';
+    h2 {
+      font-family: "Quicksand";
       margin: 30px 0;
     }
     .list {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       padding: 16px;
-      .box{
+      .box {
         margin: 0 40px;
         text-align: center;
-        h1{
+        h1 {
           font-size: 50px;
           margin-bottom: 13px;
         }
@@ -509,8 +536,8 @@ main {
         flex-wrap: wrap;
       }
     }
-    #alur-daftar-pendaki{
-      h2{
+    #alur-daftar-pendaki {
+      h2 {
         font-size: 20px;
         margin: 10px 0;
       }
@@ -675,10 +702,10 @@ main {
         display: flex;
         flex-wrap: nowrap;
         .card {
-          h1{
+          h1 {
             font-size: 40px;
           }
-          h3{
+          h3 {
             font-size: 16px;
           }
         }
@@ -716,7 +743,7 @@ main {
       }
     }
     #informasi-gunung {
-      h2{
+      h2 {
         font-size: 30px;
       }
       .informasi-detail-gunung {
@@ -737,7 +764,7 @@ main {
     }
     #alur-daftar-pendaki {
       width: 80%;
-      h2{
+      h2 {
         font-size: 30px;
       }
       .alur-daftar-container {
@@ -750,7 +777,7 @@ main {
     }
     #galeri-gunung {
       width: 80%;
-      h2{
+      h2 {
         font-size: 30px;
       }
       .list-galeri {
@@ -768,7 +795,7 @@ main {
       }
       .list {
         margin-top: 20px;
-        .box{
+        .box {
           h1 {
             font-size: 50px;
           }
@@ -796,7 +823,7 @@ main {
         font-size: 50px;
       }
       .informasi-detail-gunung {
-        width:80%;
+        width: 80%;
         .fa-solid {
           width: 30px;
           height: 30px;
@@ -812,23 +839,23 @@ main {
       .informasi-pendaki-gunung {
         width: 50%;
         .card {
-        margin: 20px 50px;
-        text-align: center;
-        h1 {
-          font-size: 80px;
-          margin-bottom: 10px;
-        }
-        h3 {
-          font-family: "Quicksand";
-          font-weight: 800;
-          font-size: 40px;
-          margin-bottom: 10px;
-        }
-        p {
-          font-family: "Quicksand";
-          font-weight: 800;
-          font-size: 80px;
-        }
+          margin: 20px 50px;
+          text-align: center;
+          h1 {
+            font-size: 80px;
+            margin-bottom: 10px;
+          }
+          h3 {
+            font-family: "Quicksand";
+            font-weight: 800;
+            font-size: 40px;
+            margin-bottom: 10px;
+          }
+          p {
+            font-family: "Quicksand";
+            font-weight: 800;
+            font-size: 80px;
+          }
         }
       }
     }
@@ -873,7 +900,7 @@ main {
       }
       .list {
         margin-top: 20px;
-        .box{
+        .box {
           h1 {
             font-size: 70px;
           }

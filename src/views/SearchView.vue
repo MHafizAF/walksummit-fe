@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "@vue/reactivity";
 import axios from "axios";
-import { stat } from "fs";
+//import { stat } from "fs";
 function search(searchID) {
   // const list = listForm;
   // const listJson = JSON.stringify(list);
@@ -13,7 +13,7 @@ function search(searchID) {
   // console.log(filterID);
   const searchGrup = async () => {
     const { data } = await axios
-      .get(`http://walksummit-be.herokuapp.com/api/cari-grup/${searchID}`)
+      .get(`${import.meta.env.VITE_API}/api/cari-grup/${searchID}`)
       .then(function (response) {
         return response;
       })
@@ -71,7 +71,7 @@ function search(searchID) {
     const statusText = document.querySelector(".status-text");
     statusText.style.display = "flex";
     statusText.style.alignItems = "center";
-    statusText.style.gap = '10px';
+    statusText.style.gap = "10px";
     const small = window.matchMedia("(max-width: 600px)");
     function resizeImage(size) {
       if (size.matches) {
@@ -85,56 +85,10 @@ function search(searchID) {
 
 function clearSearch() {
   const listContainer = document.querySelector("#list-grup");
-  const inputSearch  = document.querySelector("#idsearch");
+  const inputSearch = document.querySelector("#idsearch");
   inputSearch.value = "";
   listContainer.innerHTML = "";
 }
-// const listForm = reactive([
-//   {
-//     id: 1,
-//     nik: 123,
-//     nama: "pertama",
-//     gender: "pria",
-//     alamat: "malang",
-//     noHp: "surabaya",
-//     noHpOrtu: "123123",
-//     statusPembayaran: "Belum",
-//     jalur: "barat",
-//   },
-//   {
-//     id: 2,
-//     nik: 1234,
-//     nama: "kedua",
-//     gender: "wanita",
-//     alamat: "surabaya",
-//     noHp: "12312",
-//     noHpOrtu: "555",
-//     statusPembayaran: "Belum",
-//     jalur: "barat",
-//   },
-//   {
-//     id: 3,
-//     nik: 12345,
-//     nama: "ketiga",
-//     gender: "pria",
-//     alamat: "surabaya",
-//     noHp: "12312",
-//     noHpOrtu: "1231",
-//     statusPembayaran: "Belum",
-//     jalur: "barat",
-//   },
-//   {
-//     id: 4,
-//     nik: 1234456,
-//     nama: "keempat",
-//     gender: "pria",
-//     alamat: "mlg",
-//     noHp: "09123",
-//     noHpOrtu: "123123",
-//     statusPembayaran: "Belum",
-//     jalur: "barat",
-//   },
-// ]);
 </script>
 
 <template>

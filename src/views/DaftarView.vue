@@ -1,6 +1,8 @@
 <script setup>
 import FormBiodata from "../components/FormBiodata.vue";
-import { reactive } from "@vue/reactivity";
+import { reactive, ref } from "@vue/reactivity";
+import ModalAlert from "../components/ModalAlert.vue";
+import { onMounted } from "vue";
 const emit = defineEmits(["formChanges"]);
 import axios from "axios";
 
@@ -58,7 +60,7 @@ function checkForms() {
       `;
     } else {
       const data = await axios
-        .post(`http://walksummit-be.herokuapp.com/api/tambah-grup`, {
+        .post(`${import.meta.env.VITE_API}/api/tambah-grup`, {
           jalur_id: jalur,
           tgl_brangkat: berangkat,
           tgl_pulang: pulang,
@@ -85,6 +87,7 @@ function checkForms() {
 
   const tambahPendaki = async () => {
     const idGrup = await tambahGrup();
+    idGroupPendakian.value = idGrup;
     let inputForm = document.querySelectorAll("input");
     let alertTambah = document.querySelector(".alert-tambah-pendaki");
     objectBiasa.forEach(async (object) => {
@@ -115,7 +118,7 @@ function checkForms() {
         });
       }
       const data = await axios
-        .post(`http://walksummit-be.herokuapp.com/api/tambah-pelanggan`, {
+        .post(`${import.meta.env.VITE_API}/api/tambah-pelanggan`, {
           grup_id: idGrup,
           nik: object.nik,
           nama: object.nama,
@@ -125,491 +128,35 @@ function checkForms() {
           jenis_kelamin: object.jenis_kelamin,
         })
         .then(function () {
-          showModal(idGrup);
+          handleOpenModal();
         })
         .catch((error) => console.log(error));
       return data;
     });
   };
   tambahPendaki();
-
-  const showModal = (idGrup) => {
-    const containerModal = document.querySelector(".modal-container");
-    containerModal.innerHTML = `
-    <div class="message-modal">
-      <h1><i class="fa-solid fa-triangle-exclamation"></i>Peringatan Walkers</h1>
-      <h2>SIMPAN ID GRUP ANDA UNTUK</h2>
-      <h3>"VERIFIKASI PEMBAYARAN"</h3>
-      <p class="id-grup-modal">ID GRUP ANDA</p>
-      <p class="id-grup">${idGrup}</p>
-    <div class="tutup-modal">
-        <p>Tutup</p>
-    </div>
-    <div class="note">
-        <p>* Harap menghubungi kontak yang tersedia</p>
-    </div>
-    </div>
-    <style>
-    .modal-container {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-      justify-content: center;
-      align-items: center;
-      position: fixed;
-      z-index: 1; /* Sit on top */
-      padding-top: 100px;
-      display: none;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.4);
-    }
-    .message-modal {
-      width: 45%;
-      background-color: #DAEAF1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      border-radius: 20px;
-      padding: 15px;
-      gap: 5px;
-      border: 1px solid #888;
-    }
-    .fa-solid{
-      margin-right: 10px;
-    }
-    .message-modal h1 {
-      font-family: "Quicksand", sans-serif;
-      font-size: 50px;
-      color: red;
-      margin-bottom: 20px;
-    }
-    .message-modal h2 {
-      font-family: "Quicksand", sans-serif;
-      font-weight: 800;
-    }
-    .message-modal h3 {
-      font-family: "Quicksand", sans-serif;
-      font-weight: 800;
-      margin-bottom: 20px;
-    }
-    .message-modal p {
-      font-family: "Quicksand", sans-serif;
-      font-weight: 800;
-    }
-    .message-modal .id-grup-modal {
-      font-size: 24px;
-    }
-    .message-modal .id-grup {
-      font-size: 80px;
-      margin-bottom: 10px;
-    }
-    .tutup-modal {
-      background-color: white;
-      font-weight: bold;
-      text-align: center;
-      color: black;
-      padding: 10px;
-      width: 100px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-    }
-    .tutup-modal:hover {
-      background-color: red;
-      cursor: pointer;
-      color: white;
-    }
-    .message-modal .note{
-      font-style: italic;
-    }
-    @media only screen and (max-width: 729px) {
-      .message-modal{
-        width: 85%;
-      }
-      .message-modal h1 {
-        font-size: 30px;
-      }
-      .message-modal h2 {
-        font-size: 18px;
-      }
-      .message-modal h3 {
-        font-size: 18px;
-      }
-    }
-    @media only screen and (min-width: 730px) {
-      .message-modal{
-        width: 70%;
-      }
-      .message-modal h1 {
-        font-size: 40px;
-      }
-      .message-modal h2 {
-        font-size: 18px;
-      }
-      .message-modal h3 {
-        font-size: 18px;
-      }
-    }
-    @media only screen and (min-width: 900px) {
-      .message-modal{
-        width: 60%;
-      }
-      .message-modal h1 {
-        font-size: 50px;
-      }
-      .message-modal h2 {
-        font-family: "Quicksand", sans-serif;
-        font-weight: 800;
-        font-size: 25px;
-      }
-      .message-modal h3 {
-        font-family: "Quicksand", sans-serif;
-        font-weight: 800;
-        font-size: 20px;
-        margin-bottom: 20px;
-      }
-    }
-    @media only screen and (min-width: 1024px) {
-      .message-modal{
-        width: 60%;
-      }
-    }
-    @media only screen and (min-width: 1440px) {
-      .message-modal{
-        width: 45%;
-      }
-    }
-    </style>
-    `;
-    containerModal.style.display = "flex";
-
-    containerModal.addEventListener("click", (event) => {
-      event.stopPropagation();
-      containerModal.style.display = "none";
-      const listContainer = document.querySelector("#list-grup");
-      listContainer.innerHTML = "";
-    });
-  };
 }
 
-// const showModal = (idGrup) => {
-//   const containerModal = document.querySelector(".modal-container");
-//   containerModal.innerHTML = `
-//     <div class="message-modal">
-//       <h1><i class="fa-solid fa-triangle-exclamation"></i>Peringatan Walkers</h1>
-//       <h2>SIMPAN ID GRUP ANDA UNTUK</h2>
-//       <h3>"VERIFIKASI PEMBAYARAN"</h3>
-//       <p class="id-grup-modal">ID GRUP ANDA</p>
-//       <p class="id-grup">1265</p>
-//     <div class="tutup-modal">
-//         <p>Tutup</p>
-//     </div>
-//     <div class="note">
-//         <p>* Harap menghubungi kontak yang tersedia</p>
-//     </div>
-//     </div>
-//     <style>
-//     .modal-container {
-//       display: flex;
-//       flex-direction: column;
-//       gap: 5px;
-//       justify-content: center;
-//       align-items: center;
-//       position: fixed;
-//       z-index: 1; /* Sit on top */
-//       padding-top: 100px;
-//       display: none;
-//       left: 0;
-//       top: 0;
-//       width: 100%;
-//       height: 100%;
-//       overflow: auto;
-//       background-color: rgb(0, 0, 0);
-//       background-color: rgba(0, 0, 0, 0.4);
-//     }
-//     .message-modal {
-//       width: 45%;
-//       background-color: #DAEAF1;
-//       display: flex;
-//       flex-direction: column;
-//       justify-content: center;
-//       align-items: center;
-//       border-radius: 20px;
-//       padding: 15px;
-//       gap: 5px;
-//       border: 1px solid #888;
-//     }
-//     .fa-solid{
-//       margin-right: 10px;
-//     }
-//     .message-modal h1 {
-//       font-family: "Quicksand", sans-serif;
-//       font-size: 50px;
-//       color: red;
-//       margin-bottom: 20px;
-//     }
-//     .message-modal h2 {
-//       font-family: "Quicksand", sans-serif;
-//       font-weight: 800;
-//     }
-//     .message-modal h3 {
-//       font-family: "Quicksand", sans-serif;
-//       font-weight: 800;
-//       margin-bottom: 20px;
-//     }
-//     .message-modal p {
-//       font-family: "Quicksand", sans-serif;
-//       font-weight: 800;
-//     }
-//     .message-modal .id-grup-modal {
-//       font-size: 24px;
-//     }
-//     .message-modal .id-grup {
-//       font-size: 80px;
-//       margin-bottom: 10px;
-//     }
-//     .tutup-modal {
-//       background-color: white;
-//       font-weight: bold;
-//       text-align: center;
-//       color: black;
-//       padding: 10px;
-//       width: 100px;
-//       margin-bottom: 20px;
-//       border-radius: 10px;
-//     }
-//     .tutup-modal:hover {
-//       background-color: red;
-//       cursor: pointer;
-//       color: white;
-//     }
-//     .message-modal .note{
-//       font-style: italic;
-//     }
-//     @media only screen and (max-width: 729px) {
-//       .message-modal{
-//         width: 85%;
-//       }
-//       .message-modal h1 {
-//         font-size: 30px;
-//       }
-//       .message-modal h2 {
-//         font-size: 18px;
-//       }
-//       .message-modal h3 {
-//         font-size: 18px;
-//       }
-//     }
-//     @media only screen and (min-width: 730px) {
-//       .message-modal{
-//         width: 70%;
-//       }
-//       .message-modal h1 {
-//         font-size: 40px;
-//       }
-//       .message-modal h2 {
-//         font-size: 18px;
-//       }
-//       .message-modal h3 {
-//         font-size: 18px;
-//       }
-//     }
-//     @media only screen and (min-width: 900px) {
-//       .message-modal{
-//         width: 60%;
-//       }
-//       .message-modal h1 {
-//         font-size: 50px;
-//       }
-//       .message-modal h2 {
-//         font-family: "Quicksand", sans-serif;
-//         font-weight: 800;
-//         font-size: 25px;
-//       }
-//       .message-modal h3 {
-//         font-family: "Quicksand", sans-serif;
-//         font-weight: 800;
-//         font-size: 20px;
-//         margin-bottom: 20px;
-//       }
-//     }
-//     @media only screen and (min-width: 1024px) {
-//       .message-modal{
-//         width: 60%;
-//       }
-//     }
-//     @media only screen and (min-width: 1440px) {
-//       .message-modal{
-//         width: 45%;
-//       }
-//     }
-//     </style>
-//     `;
-//   containerModal.style.display = "flex";
+const showModal = ref(false);
 
-//   containerModal.addEventListener("click", (event) => {
-//     event.stopPropagation();
-//     containerModal.style.display = "none";
-//   });
-// };
+const handleOpenModal = () => {
+  showModal.value = true;
+};
 
-// function addForm() {
-//   const tambahButton = document.querySelector('.add-button');
-//   tambahButton.onclick = function(){
-//    let i = 0;
-//    let count = i++;
-//    console.log(count);
-// }
-//   const biodataContainer = document.querySelector(".biodata-container");
-//   let form = document.createElement("form");
-//   form.setAttribute("action", "");
-//   form.setAttribute("class", "form-biodata");
-//   let labelNIK = document.createElement("label");
-//   labelNIK.setAttribute("for", "");
-//   labelNIK.innerHTML = "NIK";
-//   let inputNIK = document.createElement("input");
-//   inputNIK.setAttribute("type", "text");
-//   inputNIK.setAttribute("name", "NIK");
-//   inputNIK.setAttribute("class", `nik`);
-//   inputNIK.setAttribute("placeholder", "NIK");
-//   let labelNama = document.createElement("label");
-//   labelNama.setAttribute("for", "");
-//   labelNama.innerHTML = "Nama";
-//   let inputNama = document.createElement("input");
-//   inputNama.setAttribute("type", "text");
-//   inputNama.setAttribute("name", "FullName");
-//   inputNama.setAttribute("class", `nama`);
-//   inputNama.setAttribute("placeholder", "Full Name");
-//   let radioButton = document.createElement("div");
-//   radioButton.setAttribute("class", "radio-button");
-//   let labelPria = document.createElement("label");
-//   labelPria.setAttribute("for", "");
-//   labelPria.innerHTML = "Pria";
-//   let inputPria = document.createElement("input");
-//   inputPria.setAttribute("type", "radio");
-//   inputPria.setAttribute("name", "gender");
-//   inputPria.setAttribute("value", "L");
-//   inputPria.setAttribute("class", `gender`);
-//   inputPria.setAttribute("id", "pria");
-//   let labelWanita = document.createElement("label");
-//   labelWanita.setAttribute("for", "");
-//   labelWanita.innerHTML = "wanita";
-//   let inputWanita = document.createElement("input");
-//   inputWanita.setAttribute("type", "radio");
-//   inputWanita.setAttribute("name", "gender");
-//   inputWanita.setAttribute("value", "P");
-//   inputWanita.setAttribute("class", `gender`);
-//   inputWanita.setAttribute("id", "wanita");
-//   let labelAlamat = document.createElement("label");
-//   labelAlamat.setAttribute("for", "");
-//   labelAlamat.innerHTML = "Alamat";
-//   let inputAlamat = document.createElement("input");
-//   inputAlamat.setAttribute("type", "text");
-//   inputAlamat.setAttribute("name", "Alamat");
-//   inputAlamat.setAttribute("class", `alamat`);
-//   inputAlamat.setAttribute("placeholder", "Alamat");
-//   let labelNomorTelepon = document.createElement("label");
-//   labelNomorTelepon.setAttribute("for", "");
-//   labelNomorTelepon.innerHTML = "No Telepon";
-//   let inputNomorTelepon = document.createElement("input");
-//   inputNomorTelepon.setAttribute("type", "number");
-//   inputNomorTelepon.setAttribute("name", "Nohp");
-//   inputNomorTelepon.setAttribute("class", `noHp`);
-//   inputNomorTelepon.setAttribute("placeholder", "No Hp");
-//   let labelNomorTeleponOrtu = document.createElement("label");
-//   labelNomorTeleponOrtu.setAttribute("for", "");
-//   labelNomorTeleponOrtu.innerHTML = "No Telepon Orang Tua";
-//   let inputNomorTeleponOrtu = document.createElement("input");
-//   inputNomorTeleponOrtu.setAttribute("type", "number");
-//   inputNomorTeleponOrtu.setAttribute("name", "NoHpOrtu");
-//   inputNomorTeleponOrtu.setAttribute("class", `noHpOrtu`);
-//   inputNomorTeleponOrtu.setAttribute("placeholder", "No Hp Ortu");
-//   form.append(labelNIK);
-//   form.append(inputNIK);
-//   form.append(labelNama);
-//   form.append(inputNama);
-//   radioButton.append(inputPria);
-//   radioButton.append(labelPria);
-//   radioButton.append(inputWanita);
-//   radioButton.append(labelWanita);
-//   form.append(radioButton);
-//   form.append(labelAlamat);
-//   form.append(inputAlamat);
-//   form.append(labelNomorTelepon);
-//   form.append(inputNomorTelepon);
-//   form.append(labelNomorTeleponOrtu);
-//   form.append(inputNomorTeleponOrtu);
-//   // biodataContainer.append(urutanBio);
-//   biodataContainer.append(form);
-//   form.style.display = "flex";
-//   form.style.gap = "10px";
-//   form.style.flexDirection = "column";
-//   form.style.padding = "10px 20px";
-//   form.style.borderRadius = "10px";
-//   form.style.backgroundColor = "#dbdffd";
-//   let inputs = document.querySelectorAll(".form-biodata input");
-//   inputs.forEach((input) => {
-//     input.style.padding = "5px";
-//     input.style.borderRadius = "10px";
-//   });
-//   radioButton.style.display = "flex";
-//   radioButton.style.gap = "10px";
-// }
+const handleCloseModal = () => {
+  showModal.value = false;
+};
 
-// function addForms() {
-//   let jalur = document.querySelector(".jalur").value;
-//   let berangkat = document.querySelector(".input-berangkat").value;
-//   let pulang = document.querySelector(".input-pulang").value;
+const jalurPendakian = ref({});
 
-//   const tambahGrup = async () => {
-//     const data = await axios
-//       .post(`http://127.0.0.1:8000/api/tambah-grup`, {
-//         jalur_id: jalur,
-//         tgl_brangkat: berangkat,
-//         tgl_pulang: pulang,
-//       })
-//       .then(function (response) {
-//         console.log(response.data.data.id);
-//         return response.data.data.id;
-//       })
-//       .catch((error) => console.log(error));
-//     return data;
-//   };
-//   tambahGrup();
-//   let nik = document.querySelector('.nik').value;
-//   let nama = document.querySelector('.nama').value;
-//   let alamat = document.querySelector('.alamat').value;
-//   let noTelp = document.querySelector('.noHp').value;
-//   let noTelpOrtu = document.querySelector('.noHpOrtu').value;
-//   let jenisKelamin = document.querySelector('.gender').value;
-//   for (let i = 0; i <2 ; i++){
-//     console.log(nik[i],nama[i],alamat[i],noTelp[i],noTelpOrtu[i],jenisKelamin[i]);
-//   }
-//   const tambahPendaki = async () => {
-//     const idGrup = await tambahGrup()
-//     const data = await axios
-//       .post(`http://127.0.0.1:8000/api/tambah-pelanggan`, {
-//         grup_id: idGrup,
-//         nik: nik,
-//         nama: nama,
-//         alamat: alamat,
-//         no_telp: noTelp,
-//         no_telp_orgtua: noTelpOrtu,
-//         jenis_kelamin: jenisKelamin,
-//       })
-//       .then(function (response) {
-//         console.log(response);
-//       })
-//       .catch((error) => console.log(error));
-//     return data;
-//   };
-//   tambahPendaki();
-// }
+onMounted(() => {
+  axios
+    .get(`${import.meta.env.VITE_API}/api/jalur`)
+    .then((response) => (jalurPendakian.value = response.data.data[0]))
+    .catch((err) => console.log(err));
+});
+
+const idGroupPendakian = ref("");
 </script>
 
 <template>
@@ -643,11 +190,13 @@ function checkForms() {
             v-model="formsPendakian.jalur"
             required
           >
-            <option value="1">Kledung</option>
-            <option value="2">Alang-Alang Sewu</option>
-            <option value="3">Ndoro Arum</option>
-            <option value="4">Sigedang</option>
-            <option value="5">Bansari</option>
+            <option
+              v-for="(value, index) in jalurPendakian"
+              :key="index"
+              :value="value.id"
+            >
+              {{ value.nama }}
+            </option>
           </select>
         </div>
         {{ jalur }}
@@ -679,7 +228,12 @@ function checkForms() {
     >
       <i class="fa-solid fa-circle-check"></i>Selesai
     </button>
-    <div class="modal-container"></div>
+    <!-- <div class="modal-container"></div> -->
+    <ModalAlert
+      v-if="showModal"
+      @close="handleCloseModal"
+      :idGrup="idGroupPendakian"
+    />
   </main>
 </template>
 
