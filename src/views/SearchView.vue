@@ -109,7 +109,12 @@ function clearSearch() {
       />
     </form>
     <div class="search-button-container">
-      <button type="submit" class="btn btn-white" aria-label="Mulai Mencari">
+      <button
+        type="submit"
+        class="btn btn-white"
+        aria-label="Mulai Mencari"
+        @click="search(searchID)"
+      >
         Search
       </button>
       <button
