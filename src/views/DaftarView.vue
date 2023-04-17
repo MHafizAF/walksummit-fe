@@ -152,7 +152,7 @@ const jalurPendakian = ref({});
 onMounted(() => {
   axios
     .get(`${import.meta.env.VITE_API}/api/jalur`)
-    .then((response) => (jalurPendakian.value = response.data.data[0]))
+    .then((response) => (jalurPendakian.value = response.data.data))
     .catch((err) => console.log(err));
 });
 
