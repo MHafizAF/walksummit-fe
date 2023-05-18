@@ -1,54 +1,21 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
-function getAllKuota() {
-  const showKuota = async () => {
-    const { data } = await axios
-      .get(`${import.meta.env.VITE_API}/api/informasi-gunung`)
-      .then(function (response) {
-        return response;
-      })
-      .catch((error) => console.log(error));
-    return data;
-  };
-  const show = async () => {
-    const responseJson = await showKuota();
-    console.log(responseJson.data);
-    const jalur = responseJson.data.kuota_tiap_jalur;
-    const jalurMap = jalur.map((jalur) => {
-      const content = document.querySelector(".content");
-      content.innerHTML += `
-      <div class="card-jalur">
-        <h2 tabindex="0">Via ${jalur.nama}</h2>
-        <h3 tabindex="0">Sisa Kuota Hari ini : <i class="fa-solid fa-person-hiking"></i>${jalur.kuota}</h3>
-      </div>
-      <style>
-      .content{
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-      .card-jalur{
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 16px;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        border-radius: 8px;
-      }
-      .fa-solid {
-        margin-right: 6px;
-        margin-left: 6px;
-      }
-      h2,h3{
-          font-family: "Quicksand", sans-serif;
-        }
-      </style>
-      `;
-    });
-  };
-  show();
+import CardKuota from "../components/CardKuota.vue";
+
+const dataKuota = ref([]);
+
+// method for get data kuota
+async function getAllKuota() {
+  await axios
+    .get(`${import.meta.env.VITE_API}/api/informasi-gunung`)
+    .then(function (response) {
+      dataKuota.value = response.data.data.kuota_tiap_jalur;
+    })
+    .catch((error) => console.log(error));
 }
+
+// run method gerallkuoata when page mounted
 onMounted(() => {
   getAllKuota();
 });
@@ -59,7 +26,7 @@ onMounted(() => {
     <div class="header">
       <h1>Kuota Tiap Jalur</h1>
     </div>
-    <div class="content"></div>
+    <CardKuota v-for="(value, index) in dataKuota" :key="index" :item="value" />
   </main>
 </template>
 
