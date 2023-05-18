@@ -1,5 +1,6 @@
 <script setup>
 const props = defineProps(["foo"]);
+import { watch } from "vue";
 import { reactive } from "@vue/reactivity";
 
 const form = reactive({
@@ -58,6 +59,7 @@ const form = reactive({
         required
       />
       <label for="" class="input_style__label" tabindex="0">No.Hp</label>
+      <p class="note">Gunakan format +6282xxxxxxx</p>
     </div>
     <div class="input_style">
       <input
@@ -69,6 +71,7 @@ const form = reactive({
         required
       />
       <label for="" class="input_style__label" tabindex="0">No.Kerabat</label>
+      <p class="note">Gunakan format +6282xxxxxxx</p>
     </div>
     <label for="" class="title-gender" tabindex="0">Jenis kelamin</label>
     <div class="radio-button">
@@ -110,6 +113,10 @@ form {
   border: 2px solid black;
   background-color: white;
   h2 {
+    font-family: "Quicksand", sans-serif;
+  }
+  .note {
+    font-size: small;
     font-family: "Quicksand", sans-serif;
   }
   .input_style {
@@ -158,6 +165,7 @@ form {
   .title-gender {
     font-weight: 800;
     font-family: "Quicksand", sans-serif;
+    margin-top: 12px;
   }
   .radio-button {
     display: flex;
@@ -171,5 +179,22 @@ form {
       font-weight: 800;
     }
   }
+}
+</style>
+
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
 }
 </style>
